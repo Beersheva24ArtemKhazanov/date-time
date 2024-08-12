@@ -19,7 +19,7 @@ public class PastTemporalDateProximity implements TemporalAdjuster {
     public Temporal adjustInto(Temporal temporal) {
     int index = Arrays.binarySearch(localDates, temporal);
     int pos = index < 0 ? -index - 2 : index--;
-    return pos < localDates.length && pos > 0 ? localDates[pos] : null;
+    return pos < localDates.length && pos >= 0 ? localDates[pos] : null;
     }
 
 }

@@ -45,11 +45,13 @@ public class DateTimeTest {
         LocalDate exampleDate2 = LocalDate.of(2021, 11, 8);
         LocalDate exampleDate3 = LocalDate.of(2019, 11, 8);
         LocalDate exampleDate4 = LocalDate.of(2024, 5, 19);
+        LocalDate exampleDate5 = LocalDate.of(2020, 8, 16);
         LocalDate[] localDates = {date1, date3, date4, date2};
         PastTemporalDateProximity adjuster = new PastTemporalDateProximity(localDates);
         assertEquals(date2, exampleDate1.with(adjuster));
         assertEquals(date3, exampleDate2.with(adjuster));
         assertEquals(null, exampleDate3.with(adjuster));
         assertEquals(date4, exampleDate4.with(adjuster));
+        assertEquals(date1, exampleDate5.with(adjuster));
     }
 }
