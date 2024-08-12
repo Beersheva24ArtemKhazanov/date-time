@@ -9,17 +9,17 @@ public class PastTemporalDateProximity implements TemporalAdjuster {
     //TODO
     //some encapsulation
     //array of temporals supporting Day, Month, Year (Dates)
-    private LocalDate[] localDates;
-    public PastTemporalDateProximity(LocalDate[] localDates) {
-        Arrays.sort(localDates);
-        this.localDates = Arrays.copyOf(localDates, localDates.length);
+    private Temporal[] dates;
+    public PastTemporalDateProximity(Temporal[] dates) {
+        Arrays.sort(dates);
+        this.dates = Arrays.copyOf(dates, dates.length);
     }
 
     @Override
     public Temporal adjustInto(Temporal temporal) {
-    int index = Arrays.binarySearch(localDates, temporal);
+    int index = Arrays.binarySearch(dates, temporal);
     int pos = index < 0 ? -index - 2 : index--;
-    return pos < localDates.length && pos >= 0 ? localDates[pos] : null;
+    return pos < dates.length && pos >= 0 ? dates[pos] : null;
     }
 
 }

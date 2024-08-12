@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 import java.util.Locale;
 
@@ -37,16 +38,16 @@ public class DateTimeTest {
 
     @Test 
     void pastTemporalDateProximityTest() {
-        LocalDate date1 = LocalDate.of(2020, 8, 15);
-        LocalDate date2 = LocalDate.of(2021, 9, 23);
-        LocalDate date3 = LocalDate.of(2021, 11, 8);
-        LocalDate date4 = LocalDate.of(2023, 4, 23);
-        LocalDate exampleDate1 = LocalDate.of(2021, 10, 22);
-        LocalDate exampleDate2 = LocalDate.of(2021, 11, 8);
-        LocalDate exampleDate3 = LocalDate.of(2019, 11, 8);
-        LocalDate exampleDate4 = LocalDate.of(2024, 5, 19);
-        LocalDate exampleDate5 = LocalDate.of(2020, 8, 16);
-        LocalDate[] localDates = {date1, date3, date4, date2};
+        Temporal date1 = LocalDate.of(2020, 8, 15);
+        Temporal date2 = LocalDate.of(2021, 9, 23);
+        Temporal date3 = LocalDate.of(2021, 11, 8);
+        Temporal date4 = LocalDate.of(2023, 4, 23);
+        Temporal exampleDate1 = LocalDate.of(2021, 10, 22);
+        Temporal exampleDate2 = LocalDate.of(2021, 11, 8);
+        Temporal exampleDate3 = LocalDate.of(2019, 11, 8);
+        Temporal exampleDate4 = LocalDate.of(2024, 5, 19);
+        Temporal exampleDate5 = LocalDate.of(2020, 8, 16);
+        Temporal[] localDates = {date1, date3, date4, date2};
         PastTemporalDateProximity adjuster = new PastTemporalDateProximity(localDates);
         assertEquals(date2, exampleDate1.with(adjuster));
         assertEquals(date3, exampleDate2.with(adjuster));
