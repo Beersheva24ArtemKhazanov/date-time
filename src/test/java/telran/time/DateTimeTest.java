@@ -1,10 +1,14 @@
 package telran.time;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.*;
+import java.time.chrono.MinguoDate;
+import java.time.chrono.ThaiBuddhistDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 import java.util.Locale;
@@ -36,23 +40,35 @@ public class DateTimeTest {
         assertThrows(Exception.class, () -> LocalTime.now().with(adjuster));
     }
 
-    @Test 
-    void pastTemporalDateProximityTest() {
-        Temporal date1 = LocalDate.of(2020, 8, 15);
-        Temporal date2 = LocalDate.of(2021, 9, 23);
-        Temporal date3 = LocalDate.of(2021, 11, 8);
-        Temporal date4 = LocalDate.of(2023, 4, 23);
-        Temporal exampleDate1 = LocalDate.of(2021, 10, 22);
-        Temporal exampleDate2 = LocalDate.of(2021, 11, 8);
-        Temporal exampleDate3 = LocalDate.of(2019, 11, 8);
-        Temporal exampleDate4 = LocalDate.of(2024, 5, 19);
-        Temporal exampleDate5 = LocalDate.of(2020, 8, 16);
-        Temporal[] localDates = {date1, date3, date4, date2};
-        PastTemporalDateProximity adjuster = new PastTemporalDateProximity(localDates);
-        assertEquals(date2, exampleDate1.with(adjuster));
-        assertEquals(date3, exampleDate2.with(adjuster));
-        assertEquals(null, exampleDate3.with(adjuster));
-        assertEquals(date4, exampleDate4.with(adjuster));
-        assertEquals(date1, exampleDate5.with(adjuster));
-    }
+     Temporal[] temporals = {
+            MinguoDate.now().minus(1, ChronoUnit.DAYS),
+            ThaiBuddhistDate.now().plus(3, ChronoUnit.DAYS),
+            LocalDate.now().minus(2, ChronoUnit.YEARS),
+            LocalDateTime.now().plus(1, ChronoUnit.MONTHS)
+    };
+    PastTemporalDateProximity adjuster = new PastTemporalDateProximity(temporals);
+
+@Test
+void localDateTimeAsMinguoDate(){
+    LocalDateTime ldt = LocalDateTime.now();
+    LocalDateTime expected = LocalDateTime.now().minusDays(1);
+    assertEquals(0, ChronoUnit.SECONDS.between(ldt.with(adjuster), expected));
+}
+@Test
+void minguoDateAsZonedDateTime() {
+    MinguoDate md = MinguoDate.now().plus(2, ChronoUnit.MONTHS);
+    MinguoDate expected = MinguoDate.now().plus(1, ChronoUnit.MONTHS);
+    assertEquals(expected, md.with(adjuster));
+}
+@Test
+void zonedDateTimeAsThaiBuddhist() {
+    Temporal zdt = ZonedDateTime.now().plusDays(4);
+    ZonedDateTime expected = ZonedDateTime.now().plus(3, ChronoUnit.DAYS);
+    assertEquals(0, ChronoUnit.SECONDS.between(zdt.with(adjuster), expected));
+}
+@Test
+void localDateNotFound() {
+    LocalDate ld = LocalDate.now().minusYears(3);
+    assertNull(ld.with(adjuster));
+}
 }
